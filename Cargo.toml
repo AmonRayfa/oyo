@@ -1,0 +1,37 @@
+[package]
+name = "oyo"
+edition = "2024"
+authors = ["Amon Rayfa <amon@koseka.net>"]
+description = "A CLI tool that integrates Phased Versioning in Git repositories."
+repository = "https://github.com/AmonRayfa/oyo"
+documentation = "https://oyo.readthedocs.io"
+license = "Apache-2.0"
+readme = "README.md"
+exclude = [
+  ".cargo",
+  ".env",
+  ".github",
+  ".gitignore",
+  ".trunk",
+  "CHANGELOG.md",
+  "CONTRIBUTING.md",
+  "dist",
+  "docs",
+  "img",
+  "node_modules",
+  "package.json",
+  "package-lock.json",
+  "SECURITY.md",
+]
+publish = false
+
+[dependencies]
+clap = { version = "4.5", features = ["derive"] }
+mabe = { git = "https://github.com/AmonRayfa/mabe", branch = "v1" }
+regex = "1.12"
+
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 3

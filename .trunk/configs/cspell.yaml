@@ -1,0 +1,40 @@
+# Suggestions can sometimes take longer on CI machines, leading to inconsistent results.
+suggestionsTimeout: 5000 # ms
+version: "0.2"
+language: "en"
+ignorePaths:
+  - img/
+words:
+  [
+    amonrayfa,
+    androideabi,
+    armv,
+    clippy,
+    consec,
+    creatordate,
+    dunder,
+    emscripten,
+    getline,
+    gnueabi,
+    gnueabihf,
+    idents,
+    koseka,
+    mabe,
+    markdownlint,
+    metalinter,
+    metalinters,
+    msvc,
+    njsproj,
+    nocapture,
+    ntvs,
+    println,
+    pycache,
+    rayfa,
+    rollup,
+    rustdoc,
+    rustdocflags,
+    rustup,
+    taiki,
+    trunkio,
+    venv,
+  ]
