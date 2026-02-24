@@ -15,11 +15,14 @@ use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
 #[command(name = "oyo")]
-#[command(
-    about = "A CLI tool that integrates Phased Versioning in Git repositories.", long_about = None)]
+#[command(about = "A CLI tool that integrates Phased Versioning in Git repositories.", long_about = None)]
 pub(crate) struct Cli {
+    /// Returns the current version of the program.
+    #[arg(short, long, exclusive = true)]
+    pub(crate) version: bool,
+
     #[command(subcommand)]
-    pub(crate) command: Commands,
+    pub(crate) command: Option<Commands>,
 }
 
 #[derive(Subcommand)]

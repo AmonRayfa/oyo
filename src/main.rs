@@ -6,6 +6,11 @@
 //! It acts as a bridge between your project's versioning scheme and Git by mapping generations to branches and automatically
 //! managing tags for phases and revisions, ensuring your releases remain perfectly consistent and free of manual errors.
 //!
+//! # Cargo Features
+//!
+//! This project has no public
+//! [Cargo features](https://doc.rust-lang.org/stable/cargo/reference/features.html#the-features-section).
+//!
 //! # Installation
 //!
 //! To use the **latest stable version** of the project, run the following command targeting the `v1` branch in your terminal:
@@ -46,9 +51,21 @@ use mabe::Result;
 #[mabe::main]
 fn main() -> Result<()> {
     let cli = Cli::parse();
+
+    if cli.version {
+        println!("dev");
+        return Ok(());
+    }
+
     match cli.command {
-        Commands::Gen { number } => run_gen(number),
-        Commands::Phase { name } => run_phase(name),
-        Commands::Rev => run_rev(),
+        Some(Commands::Gen { number }) => run_gen(number),
+        Some(Commands::Phase { name }) => run_phase(name),
+        Some(Commands::Rev) => run_rev(),
+        None => {
+            println!(
+                "\x1b[1;31merror:\x1b[0m no subcommand or flag was provided\n\n\x1b[1;4mUsage:\x1b[0m \x1b[1moyo\x1b[0m [COMMAND]\n\nFor more information, try '\x1b[1m--help\x1b[0m'."
+            );
+            Ok(())
+        }
     }
 }
