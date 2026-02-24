@@ -26,10 +26,10 @@
 
 <h2><img height="20" alt="branches" src="./img/branches.svg">&nbsp;&nbsp;Branches</h2>
 
-| Branch | Status      | Description                                              |
-| :----- | :---------- | :------------------------------------------------------- |
-| `v1`   | **Stable**  | The latest production release.                           |
-| `dev`  | **Nightly** | Active development branch. Merged into `v1` when stable. |
+| Branch | Description                                                     |
+| :----- | :-------------------------------------------------------------- |
+| `v1`   | The latest production branch.                                   |
+| `dev`  | The development branch; regularly merged into `v1` when stable. |
 
 **Note for Contributors:** Please submit all feature requests and standard bug fixes to the **`dev`** branch.
 
@@ -46,6 +46,8 @@ To use the **nightly version**, you can change the branch to `dev`:
 ```sh
 cargo install --git https://github.com/AmonRayfa/oyo --branch dev
 ```
+
+If you want to install `cargo`, you can do so by following the instructions on the [Rust website](https://www.rust-lang.org/tools/install/).
 
 You can now start using the `oyo` CLI tool to manage your repository's version branches and tags directly from your terminal.
 

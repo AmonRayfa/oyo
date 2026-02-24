@@ -4,10 +4,10 @@
 
 Security updates are provided for the following versions of the project:
 
-| Version | Supported          |
-| ------- | ------------------ |
-| v1      | :white_check_mark: |
-| nightly | :white_check_mark: |
+| Version |     Supported      |
+| :------ | :----------------: |
+| `v1`    | :white_check_mark: |
+| `dev`   | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
