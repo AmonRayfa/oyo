@@ -34,6 +34,7 @@ pub(crate) fn run_phase(name: String) -> Result<()> {
     match tags.iter().rev().find_map(|tag| tag_pattern.captures(tag)) {
         Some(last_version_tag) => {
             let previous_phase = &last_version_tag[1];
+            let previous_rev = &last_version_tag[2];
             let previous_char = previous_phase.chars().next().unwrap();
             let new_char = name.chars().next().unwrap();
 
@@ -56,7 +57,7 @@ pub(crate) fn run_phase(name: String) -> Result<()> {
             }
 
             git(&["tag", &format!("v{}-{}.0", r#gen, name)])?;
-            println!("↪️ Transitioned from phase {} to phase {} on branch v{}...", previous_phase, name, r#gen);
+            println!("🔀 Phase transition: v{}-{}.{} -> v{}-{}.0", r#gen, previous_phase, previous_rev, r#gen, name);
         }
         None => {
             if !name.starts_with('a') {
@@ -67,7 +68,7 @@ pub(crate) fn run_phase(name: String) -> Result<()> {
             }
 
             git(&["tag", &format!("v{}-{}.0", r#gen, name)])?;
-            println!("✨ Initialized branch v{} with phase {}...", r#gen, name);
+            println!("✨ Phase initialization: v{}-{}.0", r#gen, name);
         }
     }
 

@@ -31,7 +31,7 @@ pub(crate) fn run_rev() -> Result<()> {
             let previous_rev: u64 = last_version_tag[2].parse()?;
 
             git(&["tag", &format!("v{}-{}.{}", r#gen, phase, previous_rev + 1)])?;
-            println!("⬆️ Bumped revision number on phase {}: {} -> {}", phase, previous_rev, previous_rev + 1);
+            println!("🔼 Revision bump: v{}-{}.{} -> v{}-{}.{}", r#gen, phase, previous_rev, r#gen, phase, previous_rev + 1);
         }
         None => {
             bail!("The current branch (v{}) has no phase yet.", r#gen);
