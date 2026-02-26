@@ -20,17 +20,21 @@ pub(super) fn git(args: &[&str]) -> Result<String> {
     Ok(String::from_utf8(output.stdout)?.trim().to_string())
 }
 
+/// Ensures the repository was initialized with a commit.
+/// Returns an `Error` if it wasn't.
 pub(super) fn check_init_repo() -> Result<()> {
     if git(&["branch", "--list"])?.is_empty() {
-        bail!("You must initialize the repository with a commit before using oyo.");
+        bail!("The repository must be initialized with a commit before \x1b[4moyo\x1b[0m can be used.");
     }
     Ok(())
 }
 
+/// Ensures that there are no tags on the last commit of the current branch.
+/// Returns an `Error` if there are.
 pub(super) fn check_last_commit() -> Result<()> {
     let existing_tags = git(&["tag", "--points-at", "HEAD"])?;
     if !existing_tags.is_empty() {
-        bail!("The last commit on this branch already has one or multiple tags:\n{}", existing_tags);
+        bail!("The last commit on this branch is already associated with one or more tags:\n{}", existing_tags);
     }
     Ok(())
 }

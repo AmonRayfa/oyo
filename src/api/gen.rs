@@ -5,6 +5,7 @@ use super::{check_init_repo, git};
 use mabe::Result;
 use regex::Regex;
 
+/// Handles the `gen` subcommand.
 pub(crate) fn run_gen(number: Option<u64>) -> Result<()> {
     check_init_repo()?;
 

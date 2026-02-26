@@ -21,6 +21,7 @@ pub(crate) struct Cli {
     #[arg(short, long, exclusive = true)]
     pub(crate) version: bool,
 
+    /// The subcommand to execute.
     #[command(subcommand)]
     pub(crate) command: Option<Commands>,
 }
@@ -33,11 +34,13 @@ pub(crate) enum Commands {
         #[arg(short, long)]
         number: Option<u64>,
     },
+
     /// Creates a tag with the provided phase name and active version branch (the revision is set to 0).
     Phase {
         /// The name of the new phase.
         name: String,
     },
+
     /// Creates a new tag by incrementing the revision number of the active version branch's last tag.
     Rev,
 }
