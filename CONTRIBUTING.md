@@ -86,13 +86,13 @@ npm run fmt --all                                           # Formats all the fi
 
 ## Testing and Building the Project
 
-All tests are located in the `src/tests/` directory and can be run using the following commands:
+There are no tests for this project at the moment, but here are some generic test commands:
 
 ```sh
 cargo test                                                  # Runs all the tests in the project.
-cargo test -- --nocapture                                   # Runs all the tests in the project and displays their output.
-cargo test --lib utils::helpers::tests                      # Runs the tests in the `tests` module of `src/utils/helpers/mod.rs`.
-cargo test --test unit_variants                             # Runs the tests in `tests/unit_variants.rs`.
+cargo test --nocapture                                      # Runs all the tests in the project and displays their output.
+cargo test --lib parent_mod::child_mod::tests               # Runs the tests in the `tests` module in `src/parent_mod/child_mod/mod.rs` (or in `src/parent_mod/child_mod.rs`).
+cargo test --test some_test_module                          # Runs the tests in `tests/some_test_module.rs`.
 cargo test --features colorize                              # Runs all the tests in the project for the `colorize` feature.
 cargo test --all-features                                   # Runs all the tests in the project for all the features.
 ```
