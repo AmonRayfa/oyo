@@ -53,7 +53,7 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
 
     if cli.version {
-        println!("v1-alpha.1");
+        println!("v1-alpha.2");
         return Ok(());
     }
 
