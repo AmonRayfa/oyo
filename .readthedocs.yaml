@@ -18,5 +18,5 @@ build:
     # 4. Copies the cargo output (in 'target/doc') to the RTD output directory.
     - cp -r target/doc/* $READTHEDOCS_OUTPUT/html/
 
-    # 5. Redirects users to 'mabe/index.html'.
+    # 5. Redirects users to 'oyo/index.html'.
     - cp .cargo/redirect.html $READTHEDOCS_OUTPUT/html/index.html
