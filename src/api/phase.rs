@@ -5,6 +5,7 @@ use super::{check_init_repo, check_last_commit, git};
 use mabe::{Context, Result, bail};
 use regex::Regex;
 
+/// Handles the `phase` subcommand.
 pub(crate) fn run_phase(name: String) -> Result<()> {
     check_init_repo()?;
     check_last_commit()?;

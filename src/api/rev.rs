@@ -5,6 +5,7 @@ use super::{check_init_repo, check_last_commit, git};
 use mabe::{Context, Result, bail};
 use regex::Regex;
 
+/// Handles the `rev` subcommand.
 pub(crate) fn run_rev() -> Result<()> {
     check_init_repo()?;
     check_last_commit()?;
