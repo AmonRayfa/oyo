@@ -13,15 +13,13 @@ pub(crate) fn run_phase(name: String) -> Result<()> {
     println!("🔍 Inspecting current branch ({})...", current_branch);
 
     let branch_pattern = Regex::new(r"^v(0|[1-9]\d*)$").unwrap();
-    let r#gen = branch_pattern
-        .captures(&current_branch)
-        .context("Current branch is not a valid version branch (vN). Cannot create phase on this branch.")?[1]
-        .to_string();
+    let r#gen =
+        branch_pattern.captures(&current_branch).context("Current branch is not a valid version branch (vN).")?[1].to_string();
 
     println!("📋 Validating phase name...");
 
     if !name.chars().all(|c| c.is_ascii_lowercase()) {
-        bail!("Phase name '{}' is invalid. Only lowercase ASCII characters [a-z] are allowed..", name);
+        bail!("Invalid phase name: '{}'. Only lowercase ASCII characters [a-z] are allowed.", name);
     }
 
     let tag_pattern = Regex::new(&format!(r"^v{}-([a-z]+)\.(0|[1-9]\d*)$", r#gen)).unwrap();
@@ -62,7 +60,7 @@ pub(crate) fn run_phase(name: String) -> Result<()> {
         None => {
             if !name.starts_with('a') {
                 bail!(
-                    "Phase name '{}' is invalid. There are no prior version tags for the current version branch, so the phase name must start with 'a'.",
+                    "Invalid phase name: '{}'. There are no prior version tags on the current branch, so the phase name must start with 'a'.",
                     name
                 );
             }
