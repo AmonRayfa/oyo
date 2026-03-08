@@ -111,8 +111,8 @@ cargo build --all-features                                  # Builds the project
 You can build the documentation using the following command:
 
 ```sh
-cargo doc --workspace --no-deps                             # Builds the documentation at `target/doc/`.
-cargo doc --workspace --no-deps --open                      # Builds the documentation and opens it in the browser.
+cargo doc --no-deps                                         # Builds the documentation at `target/doc/`.
+cargo doc --no-deps --open                                  # Builds the documentation and opens it in the browser.
 ```
 
 ## License
