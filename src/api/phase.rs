@@ -1,6 +1,8 @@
 // Copyright 2026 Amon Rayfa.
 // SPDX-License-Identifier: Apache-2.0.
 
+//! This module defines the function behind the `oyo phase <name>` command.
+
 use super::{check_init_repo, check_last_commit, git};
 use mabe::{Context, Result, bail};
 use regex::Regex;
@@ -18,6 +20,10 @@ pub(crate) fn run_phase(name: String) -> Result<()> {
         branch_pattern.captures(&current_branch).context("Current branch is not a valid version branch (vN).")?[1].to_string();
 
     println!("📋 Validating phase name...");
+
+    if name.is_empty() {
+        bail!("Invalid phase name: the name cannot be empty.");
+    }
 
     if !name.chars().all(|c| c.is_ascii_lowercase()) {
         bail!("Invalid phase name: '{}'. Only lowercase ASCII characters [a-z] are allowed.", name);
@@ -55,7 +61,7 @@ pub(crate) fn run_phase(name: String) -> Result<()> {
                 );
             }
 
-            git(&["tag", &format!("v{}-{}.0", r#gen, name)])?;
+            git(&["tag", "-a", &format!("v{}-{}.0", r#gen, name), "-m", &format!("v{}-{}.0", r#gen, name)])?;
             println!("🔀 Phase transition: v{}-{}.{} -> v{}-{}.0", r#gen, previous_phase, previous_rev, r#gen, name);
         }
         None => {
@@ -66,7 +72,7 @@ pub(crate) fn run_phase(name: String) -> Result<()> {
                 );
             }
 
-            git(&["tag", &format!("v{}-{}.0", r#gen, name)])?;
+            git(&["tag", "-a", &format!("v{}-{}.0", r#gen, name), "-m", &format!("v{}-{}.0", r#gen, name)])?;
             println!("✨ Phase initialization: v{}-{}.0", r#gen, name);
         }
     }

@@ -1,6 +1,6 @@
 # Contribution Guide
 
-This file is primarily intended for developers who wish to fork the project and potentially contribute to it. This project adheres to the [Koseka Standards](https://koseka.net/standards/), which provides standardized versioning and contribution rules. So, make sure to read it first before contributing to the project in any way.
+This file is primarily intended for developers who wish to fork the project and potentially contribute to it. This project uses [Phased Versioning](https://phased-versioning.koseka.net), which defines the versioning, branching, and release rules, and commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. So, make sure to read both first before contributing to the project in any way.
 
 ## Project Structure
 
@@ -16,13 +16,18 @@ Here are the main directories and files in the project:
 │   │   ├── phase.rs
 │   │   └── rev.rs
 │   └── main.rs
+├── tests/
+│   └── cli.rs
+├── build.rs
 ├── Cargo.toml
 └── package.json
 ```
 
-The `src/api/gen.rs`, `src/api/phase.rs`, and `src/api/rev.rs` provide the core logic for the `gen`, `phase`, and `rev` subcommands respectively. The rest should be pretty self-explanatory. Additionally, the `package.json` file configures the [Node](https://nodejs.org) environment required to run the [Trunk CLI](https://docs.trunk.io/code-quality/overview) metalinter.
+The `src/api/gen.rs`, `src/api/phase.rs`, and `src/api/rev.rs` files provide the core logic for the `oyo gen [-n/--number <generation_number>]`, `oyo phase <name>`, and `oyo rev` commands respectively. And, the `src/api/mod.rs` file defines the topology of the CLI, while the `build.rs` script derives the version string of the CLI from the state of the Git repository at build time. The `tests/cli.rs` file contains the integration tests for the CLI commands. The rest should be pretty self-explanatory.
 
-See the [API reference](https://oyo.readthedocs.io/en/stable/oyo/all.html) for a more detailed overview of the project structure.
+Additionally, the `package.json` file configures the [Node](https://nodejs.org) environment required to run the [Trunk CLI](https://docs.trunk.io/code-quality/overview) metalinter.
+
+See the [API reference](https://oyo.readthedocs.io/en/latest/oyo/all.html) for a more detailed overview of the project structure.
 
 ## Setting Up the Development Environment
 
@@ -74,26 +79,24 @@ You can manually run the linters and formatters using the following commands:
 
 ```sh
 npm run check                                               # Runs linters and formatters on all the changed files.
-npm run check --all                                         # Runs linters and formatters on all the files in the repository.
+npm run check -- --all                                      # Runs linters and formatters on all the files in the repository.
 ```
 
 You can manually format the code using the following commands:
 
 ```sh
 npm run fmt                                                 # Formats all the changed files.
-npm run fmt --all                                           # Formats all the files in the repository.
+npm run fmt -- --all                                        # Formats all the files in the repository.
 ```
 
 ## Testing and Building the Project
 
-There are no tests for this project at the moment, but here are some generic test commands:
+You can run the tests using the following commands:
 
 ```sh
 cargo test                                                  # Runs all the tests in the project.
-cargo test --nocapture                                      # Runs all the tests in the project and displays their output.
-cargo test --lib parent_mod::child_mod::tests               # Runs the tests in the `tests` module in `src/parent_mod/child_mod/mod.rs` (or in `src/parent_mod/child_mod.rs`).
-cargo test --test some_test_module                          # Runs the tests in `tests/some_test_module.rs`.
-cargo test --features colorize                              # Runs all the tests in the project for the `colorize` feature.
+cargo test -- --nocapture                                   # Runs all the tests in the project and displays their output.
+cargo test --test cli                                       # Runs the integration tests in `tests/cli.rs`.
 cargo test --all-features                                   # Runs all the tests in the project for all the features.
 ```
 
@@ -102,13 +105,12 @@ You can build the project using the following commands:
 ```sh
 cargo build                                                 # Builds the project in debug mode.
 cargo build --release                                       # Builds the project in release mode.
-cargo build --features colorize                             # Builds the project with the `colorize` feature.
 cargo build --all-features                                  # Builds the project with all the features.
 ```
 
 ## Building the Documentation
 
-You can build the documentation using the following command:
+You can build the documentation using the following commands:
 
 ```sh
 cargo doc --no-deps                                         # Builds the documentation at `target/doc/`.

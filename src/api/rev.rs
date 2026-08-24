@@ -1,6 +1,8 @@
 // Copyright 2026 Amon Rayfa.
 // SPDX-License-Identifier: Apache-2.0.
 
+//! This module defines the function behind the `oyo rev` command.
+
 use super::{check_init_repo, check_last_commit, git};
 use mabe::{Context, Result, bail};
 use regex::Regex;
@@ -29,7 +31,8 @@ pub(crate) fn run_rev() -> Result<()> {
             let phase: &str = &last_version_tag[1];
             let previous_rev: u64 = last_version_tag[2].parse()?;
 
-            git(&["tag", &format!("v{}-{}.{}", r#gen, phase, previous_rev + 1)])?;
+            let new_tag = format!("v{}-{}.{}", r#gen, phase, previous_rev + 1);
+            git(&["tag", "-a", &new_tag, "-m", &new_tag])?;
             println!("🔼 Revision bump: v{}-{}.{} -> v{}-{}.{}", r#gen, phase, previous_rev, r#gen, phase, previous_rev + 1);
         }
         None => {
