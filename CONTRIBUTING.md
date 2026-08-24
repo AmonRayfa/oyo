@@ -16,15 +16,16 @@ Here are the main directories and files in the project:
 │   │   ├── phase.rs
 │   │   └── rev.rs
 │   └── main.rs
+├── build.rs
 ├── Cargo.toml
 └── package.json
 ```
 
-The `src/api/gen.rs`, `src/api/phase.rs`, and `src/api/rev.rs` files provide the core logic for the `oyo gen [-n/--number <generation_number>]`, `oyo phase <name>`, and `oyo rev` commands respectively. And, `src/api/mod.rs` file defines the topology of the CLI. The rest should be pretty self-explanatory.
+The `src/api/gen.rs`, `src/api/phase.rs`, and `src/api/rev.rs` files provide the core logic for the `oyo gen [-n/--number <generation_number>]`, `oyo phase <name>`, and `oyo rev` commands respectively. And, the `src/api/mod.rs` file defines the topology of the CLI, while the `build.rs` script derives the version string of the CLI from the state of the Git repository at build time. The rest should be pretty self-explanatory.
 
 Additionally, the `package.json` file configures the [Node](https://nodejs.org) environment required to run the [Trunk CLI](https://docs.trunk.io/code-quality/overview) metalinter.
 
-See the [API reference](https://oyo.readthedocs.io/en/stable/oyo/all.html) for a more detailed overview of the project structure.
+See the [API reference](https://oyo.readthedocs.io/en/latest/oyo/all.html) for a more detailed overview of the project structure.
 
 ## Setting Up the Development Environment
 
@@ -76,14 +77,14 @@ You can manually run the linters and formatters using the following commands:
 
 ```sh
 npm run check                                               # Runs linters and formatters on all the changed files.
-npm run check --all                                         # Runs linters and formatters on all the files in the repository.
+npm run check -- --all                                      # Runs linters and formatters on all the files in the repository.
 ```
 
 You can manually format the code using the following commands:
 
 ```sh
 npm run fmt                                                 # Formats all the changed files.
-npm run fmt --all                                           # Formats all the files in the repository.
+npm run fmt -- --all                                        # Formats all the files in the repository.
 ```
 
 ## Testing and Building the Project
@@ -92,10 +93,9 @@ There are no tests for this project at the moment, but here are some generic tes
 
 ```sh
 cargo test                                                  # Runs all the tests in the project.
-cargo test --nocapture                                      # Runs all the tests in the project and displays their output.
+cargo test -- --nocapture                                   # Runs all the tests in the project and displays their output.
 cargo test --lib parent_mod::child_mod::tests               # Runs the tests in the `tests` module in `src/parent_mod/child_mod/mod.rs` (or in `src/parent_mod/child_mod.rs`).
 cargo test --test some_test_module                          # Runs the tests in `tests/some_test_module.rs`.
-cargo test --features colorize                              # Runs all the tests in the project for the `colorize` feature.
 cargo test --all-features                                   # Runs all the tests in the project for all the features.
 ```
 
@@ -104,7 +104,6 @@ You can build the project using the following commands:
 ```sh
 cargo build                                                 # Builds the project in debug mode.
 cargo build --release                                       # Builds the project in release mode.
-cargo build --features colorize                             # Builds the project with the `colorize` feature.
 cargo build --all-features                                  # Builds the project with all the features.
 ```
 
