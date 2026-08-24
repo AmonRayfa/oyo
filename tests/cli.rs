@@ -362,3 +362,27 @@ fn phase_fails_when_a_listed_version_file_is_invalid() {
     assert_graceful_failure(&repo.oyo(&["phase", "alameda"]));
     assert_eq!(repo.tags(), "");
 }
+
+#[test]
+fn gen_rejects_generation_zero() {
+    let repo = TestRepo::new();
+    assert_graceful_failure(&repo.oyo(&["gen", "-n", "0"]));
+    assert_eq!(repo.current_branch(), "dev");
+}
+
+#[test]
+fn gen_ignores_v0_branches() {
+    let repo = TestRepo::new();
+    repo.git(&["branch", "v0"]);
+    assert!(repo.oyo(&["gen"]).status.success());
+    assert_eq!(repo.current_branch(), "v1");
+}
+
+#[test]
+fn phase_and_rev_reject_a_v0_branch() {
+    let repo = TestRepo::new();
+    repo.git(&["checkout", "-b", "v0"]);
+    assert_graceful_failure(&repo.oyo(&["phase", "alameda"]));
+    assert_graceful_failure(&repo.oyo(&["rev"]));
+    assert_eq!(repo.tags(), "");
+}
