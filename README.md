@@ -7,7 +7,7 @@
 </div>
 
 <div align="center">
-  <a href="https://koseka.net/standards/"><img src="https://img.shields.io/badge/Compliance-Koseka%20Standard-304CD3?style=flat&color=12398D" alt="Koseka Standards" /></a>
+  <a href="https://phased-versioning.koseka.net"><img src="https://img.shields.io/badge/Versioning-Phased-304CD3?style=flat&color=12398D" alt="Phased Versioning" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-723179?style=flat" alt="License" /></a>
   <br>
   <a href="https://github.com/AmonRayfa/oyo/releases"><img src="https://img.shields.io/github/v/tag/AmonRayfa/oyo?label=version&logo=github&color=579D52" alt="version" /></a>
@@ -22,7 +22,7 @@
 
 ---
 
-**Oyo** is a Rust CLI tool designed to seamlessly integrate and automate [Phased Versioning](https://koseka.net/standards/phased-versioning/) within your [Git](https://git-scm.com/) repositories. It acts as a bridge between your project's versioning scheme and Git by mapping generations to branches and automatically managing tags for phases and revisions, ensuring your releases remain perfectly consistent and free of manual errors.
+**Oyo** is a Rust CLI tool designed to seamlessly integrate and automate [Phased Versioning](https://phased-versioning.koseka.net) within your [Git](https://git-scm.com/) repositories. It acts as a bridge between your project's versioning scheme and Git by mapping generations to branches and automatically managing tags for phases and revisions, ensuring your releases remain perfectly consistent and free of manual errors.
 
 <h2><img height="20" alt="branches" src="./img/branches.svg">&nbsp;&nbsp;Branches</h2>
 
@@ -53,7 +53,7 @@ You can now start using the `oyo` CLI tool to manage your repository's version b
 
 <h2><img height="20" alt="usage" src="./img/usage.svg">&nbsp;&nbsp;Usage</h2>
 
-**Oyo** simplifies version management into three core commands that enforce the rules of [Phased Versioning](https://koseka.net/standards/phased-versioning/) automatically:
+**Oyo** simplifies version management into three core commands that enforce the rules of [Phased Versioning](https://phased-versioning.koseka.net) automatically:
 
 - `oyo gen [-n/--number <generation_number>]`: Creates a new **version branch** representing a **base version** (e.g., `v1`, `v2`) by incrementing the generation number of the last version branch by `1`. If no version branches currently exist, it defaults to creating `v1`. You can explicitly specify the generation number using the `-n` or `--number` flag.
 
@@ -71,7 +71,7 @@ Vulnerabilities and sensitive information should not be reported via public GitH
 
 This project is open to contributions and suggestions, and any help or feedback is highly appreciated. There is no code of conduct, but please be respectful and considerate when engaging with the community.
 
-This project adheres to the [Koseka Standards](https://koseka.net/standards/), which provides standardized versioning and contribution rules. So, make sure to read it first before contributing to the project in any way. Additionally, please refer to the [Contribution Guide](CONTRIBUTING.md) for setup instructions and guidance on how to contribute the project.
+This project uses [Phased Versioning](https://phased-versioning.koseka.net), which defines the versioning, branching, and release rules, and commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. So, make sure to read both first before contributing to the project in any way. Additionally, please refer to the [Contribution Guide](CONTRIBUTING.md) for setup instructions and guidance on how to contribute the project.
 
 Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in this project by you, shall be licensed as bellow, without any additional terms or conditions.
 

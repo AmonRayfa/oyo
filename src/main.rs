@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 
 //! [**Oyo**](https://github.com/AmonRayfa/oyo) is a Rust CLI tool designed to seamlessly integrate and automate
-//! [Phased Versioning](https://koseka.net/standards/phased-versioning/) within your [Git](https://git-scm.com/) repositories.
+//! [Phased Versioning](https://phased-versioning.koseka.net) within your [Git](https://git-scm.com/) repositories.
 //! It acts as a bridge between your project's versioning scheme and Git by mapping generations to branches and automatically
 //! managing tags for phases and revisions, ensuring your releases remain perfectly consistent and free of manual errors.
 //!
@@ -31,7 +31,7 @@
 //! # Usage
 //!
 //! **Oyo** simplifies version management into three core commands that enforce the rules of
-//! [Phased Versioning](https://koseka.net/standards/phased-versioning/) automatically:
+//! [Phased Versioning](https://phased-versioning.koseka.net) automatically:
 //!
 //! * `oyo gen [-n/--number <generation_number>]`: Creates a new **version branch** representing a **base version** (e.g., `v1`,
 //!   `v2`) by incrementing the generation number of the last version branch by `1`. If no version branches currently exist, it

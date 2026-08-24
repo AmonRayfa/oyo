@@ -1,6 +1,6 @@
 # Contribution Guide
 
-This file is primarily intended for developers who wish to fork the project and potentially contribute to it. This project adheres to the [Koseka Standards](https://koseka.net/standards/), which provides standardized versioning and contribution rules. So, make sure to read it first before contributing to the project in any way.
+This file is primarily intended for developers who wish to fork the project and potentially contribute to it. This project uses [Phased Versioning](https://phased-versioning.koseka.net), which defines the versioning, branching, and release rules, and commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. So, make sure to read both first before contributing to the project in any way.
 
 ## Project Structure
 
@@ -20,7 +20,9 @@ Here are the main directories and files in the project:
 └── package.json
 ```
 
-The `src/api/gen.rs`, `src/api/phase.rs`, and `src/api/rev.rs` provide the core logic for the `gen`, `phase`, and `rev` subcommands respectively. The rest should be pretty self-explanatory. Additionally, the `package.json` file configures the [Node](https://nodejs.org) environment required to run the [Trunk CLI](https://docs.trunk.io/code-quality/overview) metalinter.
+The `src/api/gen.rs`, `src/api/phase.rs`, and `src/api/rev.rs` files provide the core logic for the `oyo gen [-n/--number <generation_number>]`, `oyo phase <name>`, and `oyo rev` commands respectively. And, `src/api/mod.rs` file defines the topology of the CLI. The rest should be pretty self-explanatory.
+
+Additionally, the `package.json` file configures the [Node](https://nodejs.org) environment required to run the [Trunk CLI](https://docs.trunk.io/code-quality/overview) metalinter.
 
 See the [API reference](https://oyo.readthedocs.io/en/stable/oyo/all.html) for a more detailed overview of the project structure.
 
@@ -108,7 +110,7 @@ cargo build --all-features                                  # Builds the project
 
 ## Building the Documentation
 
-You can build the documentation using the following command:
+You can build the documentation using the following commands:
 
 ```sh
 cargo doc --no-deps                                         # Builds the documentation at `target/doc/`.
