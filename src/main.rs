@@ -46,7 +46,7 @@
 mod api;
 use api::{Cli, Commands, run_gen, run_phase, run_rev};
 use clap::Parser;
-use mabe::Result;
+use mabe::{Result, bail};
 
 #[mabe::main]
 fn main() -> Result<()> {
@@ -61,11 +61,6 @@ fn main() -> Result<()> {
         Some(Commands::Gen { number }) => run_gen(number),
         Some(Commands::Phase { name }) => run_phase(name),
         Some(Commands::Rev) => run_rev(),
-        None => {
-            println!(
-                "\x1b[1;31merror:\x1b[0m no subcommand or flag was provided\n\n\x1b[1;4mUsage:\x1b[0m \x1b[1moyo\x1b[0m [COMMAND]\n\nFor more information, try '\x1b[1m--help\x1b[0m'."
-            );
-            Ok(())
-        }
+        None => bail!("No subcommand or flag was provided."),
     }
 }

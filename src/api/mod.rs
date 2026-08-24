@@ -18,6 +18,7 @@ use clap::{Parser, Subcommand};
 #[derive(Parser)]
 #[command(name = "oyo")]
 #[command(about = "A CLI tool that integrates Phased Versioning in Git repositories.", long_about = None)]
+#[command(arg_required_else_help = true)]
 pub(crate) struct Cli {
     /// Returns the current version of the program.
     #[arg(short, long, exclusive = true)]
