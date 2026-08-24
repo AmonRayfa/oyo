@@ -3,9 +3,9 @@
 
 //! This build script derives the version string of the CLI from the state of the [Git](https://git-scm.com/) repository at
 //! build time, and exposes it to the program through the `OYO_VERSION` environment variable. On a version branch, the version
-//! string is the most recent reachable tag (e.g. `v1-alpha.2`, or `v1-alpha.2-3-g3c0c54a` for untagged commits), or the
-//! branch name if no tag is reachable (e.g. when installing with `cargo install --git`, which doesn't fetch tags). On any
-//! other branch (e.g. `dev`), the version string is the branch name itself.
+//! string is the full version tagged on the checked-out commit (e.g. `v1-alpha.2`), or the base version (i.e. the branch
+//! name, e.g. `v1`) if the commit isn't tagged or the tags weren't fetched (e.g. when installing with `cargo install --git`).
+//! On any other branch (e.g. `dev`), the version string is the branch name itself.
 
 use std::process::Command;
 
@@ -27,9 +27,9 @@ fn main() {
     println!("cargo:rerun-if-changed=.git/refs");
 
     let version = match git(&["branch", "--show-current"]) {
-        Some(branch) if is_version_branch(&branch) => git(&["describe", "--tags"]).unwrap_or(branch),
+        Some(branch) if is_version_branch(&branch) => git(&["describe", "--tags", "--exact-match"]).unwrap_or(branch),
         Some(branch) => branch,
-        None => git(&["describe", "--tags"]).unwrap_or_else(|| String::from("unknown")),
+        None => git(&["describe", "--tags", "--exact-match"]).unwrap_or_else(|| String::from("unknown")),
     };
 
     println!("cargo:rustc-env=OYO_VERSION={}", version);
