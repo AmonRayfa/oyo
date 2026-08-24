@@ -17,7 +17,7 @@
   <a href="https://github.com/AmonRayfa/oyo/stargazers"><img src="https://img.shields.io/github/stars/AmonRayfa/oyo?style=flat&logo=github&color=DCB456" alt="stars" /></a>
   <br>
   <a href="Cargo.toml"><img src="https://img.shields.io/badge/Dependencies-3-black?style=flat&logo=rust&logoColor=black" alt="Dependencies" /></a>
-  <a href="Cargo.toml"><img src="https://img.shields.io/badge/Size-15.9kB-black?style=flat&logo=rust&logoColor=black" alt="Size" /></a>
+  <a href="Cargo.toml"><img src="https://img.shields.io/badge/Size-14.9kB-black?style=flat&logo=rust&logoColor=black" alt="Size" /></a>
 </div>
 
 ---
@@ -71,7 +71,7 @@ Vulnerabilities and sensitive information should not be reported via public GitH
 
 This project is open to contributions and suggestions, and any help or feedback is highly appreciated. There is no code of conduct, but please be respectful and considerate when engaging with the community.
 
-This project uses [Phased Versioning](https://phased-versioning.koseka.net), which defines the versioning, branching, and release rules, and commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. So, make sure to read both first before contributing to the project in any way. Additionally, please refer to the [Contribution Guide](CONTRIBUTING.md) for setup instructions and guidance on how to contribute the project.
+This project uses [Phased Versioning](https://phased-versioning.koseka.net), which defines the versioning, branching, and release rules, and commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. So, make sure to read both first before contributing to the project in any way. Additionally, please refer to the [Contribution Guide](CONTRIBUTING.md) for setup instructions and guidance on how to contribute to the project.
 
 Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in this project by you, shall be licensed as below, without any additional terms or conditions.
 
