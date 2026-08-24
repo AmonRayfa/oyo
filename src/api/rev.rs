@@ -3,12 +3,12 @@
 
 //! This module defines the function behind the `oyo rev` command.
 
-use super::{check_init_repo, check_last_commit, git};
+use super::{check_init_repo, check_last_commit, count_distinct_phases, git, sync_version_metadata};
 use mabe::{Context, Result, bail};
 use regex::Regex;
 
 /// Handles the `rev` subcommand.
-pub(crate) fn run_rev() -> Result<()> {
+pub(crate) fn run_rev(dry_run: bool) -> Result<()> {
     check_init_repo()?;
     check_last_commit()?;
 
@@ -31,9 +31,17 @@ pub(crate) fn run_rev() -> Result<()> {
             let phase: &str = &last_version_tag[1];
             let previous_rev: u64 = last_version_tag[2].parse()?;
 
-            let new_tag = format!("v{}-{}.{}", r#gen, phase, previous_rev + 1);
-            git(&["tag", "-a", &new_tag, "-m", &new_tag])?;
-            println!("🔼 Revision bump: v{}-{}.{} -> v{}-{}.{}", r#gen, phase, previous_rev, r#gen, phase, previous_rev + 1);
+            let new_version = format!("v{}-{}.{}", r#gen, phase, previous_rev + 1);
+            let semver = format!("{}.{}.{}", r#gen, count_distinct_phases(&tags, &tag_pattern) - 1, previous_rev + 1);
+
+            if dry_run {
+                println!("🔎 Dry run: the next version would be {} (SemVer projection: {}).", new_version, semver);
+                return Ok(());
+            }
+
+            sync_version_metadata(&new_version, &semver)?;
+            git(&["tag", "-a", &new_version, "-m", &new_version])?;
+            println!("🔼 Revision bump: v{}-{}.{} -> {}", r#gen, phase, previous_rev, new_version);
         }
         None => {
             bail!("Current branch has no phase yet. Initialize it with a phase before initiating a revision bump.");

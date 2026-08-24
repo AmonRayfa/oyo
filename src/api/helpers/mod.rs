@@ -3,6 +3,9 @@
 
 //! This module contains helper functions for manipulating [Git](https://git-scm.com/).
 
+mod sync;
+pub(super) use sync::{count_distinct_phases, sync_version_metadata};
+
 use mabe::{Result, bail};
 use std::process::Command;
 
