@@ -1,6 +1,8 @@
 // Copyright 2026 Amon Rayfa.
 // SPDX-License-Identifier: Apache-2.0.
 
+//! This module contains helper functions for manipulating [Git](https://git-scm.com/).
+
 use mabe::{Result, bail};
 use std::process::Command;
 

@@ -1,6 +1,8 @@
 // Copyright 2026 Amon Rayfa.
 // SPDX-License-Identifier: Apache-2.0.
 
+//! This module defines the topology of the CLI.
+
 mod r#gen;
 mod helpers;
 mod phase;

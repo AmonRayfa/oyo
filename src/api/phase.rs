@@ -1,6 +1,8 @@
 // Copyright 2026 Amon Rayfa.
 // SPDX-License-Identifier: Apache-2.0.
 
+//! This module defines the function behind the `oyo phase <name>` command.
+
 use super::{check_init_repo, check_last_commit, git};
 use mabe::{Context, Result, bail};
 use regex::Regex;

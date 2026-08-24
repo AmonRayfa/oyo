@@ -1,6 +1,8 @@
 // Copyright 2026 Amon Rayfa.
 // SPDX-License-Identifier: Apache-2.0.
 
+//! This module defines the function behind the `oyo gen [-n/--number <generation_number>]` command.
+
 use super::{check_init_repo, git};
 use mabe::Result;
 use regex::Regex;
