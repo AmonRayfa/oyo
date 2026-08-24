@@ -30,6 +30,9 @@ clap = { version = "4.5", features = ["derive"] }
 mabe = { git = "https://github.com/AmonRayfa/mabe", branch = "v1" }
 regex = "1.12"
 
+[dev-dependencies]
+tempfile = "3.23"
+
 [profile.dev]
 opt-level = 0
 
