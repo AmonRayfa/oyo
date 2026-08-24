@@ -12,7 +12,7 @@
   <br>
   <a href="https://github.com/AmonRayfa/oyo/releases"><img src="https://img.shields.io/github/v/tag/AmonRayfa/oyo?label=version&logo=github&color=579D52" alt="version" /></a>
   <a href="https://github.com/AmonRayfa/oyo"><img src="https://img.shields.io/github/created-at/AmonRayfa/oyo?logo=github&label=created&color=C9443C" alt="created" /></a>
-  <a href="https://github.com/AmonRayfa/oyo/commits/main"><img src="https://img.shields.io/github/last-commit/AmonRayfa/oyo?display_timestamp=committer&logo=github&color=438240" alt="last commit" /></a>
+  <a href="https://github.com/AmonRayfa/oyo/commits/dev"><img src="https://img.shields.io/github/last-commit/AmonRayfa/oyo?display_timestamp=committer&logo=github&color=438240" alt="last commit" /></a>
   <a href="https://github.com/AmonRayfa/oyo/milestones"><img src="https://img.shields.io/github/milestones/all/AmonRayfa/oyo?logo=github&color=5288DF" alt="milestones" /></a>
   <a href="https://github.com/AmonRayfa/oyo/stargazers"><img src="https://img.shields.io/github/stars/AmonRayfa/oyo?style=flat&logo=github&color=DCB456" alt="stars" /></a>
   <br>
@@ -73,7 +73,7 @@ This project is open to contributions and suggestions, and any help or feedback 
 
 This project uses [Phased Versioning](https://phased-versioning.koseka.net), which defines the versioning, branching, and release rules, and commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. So, make sure to read both first before contributing to the project in any way. Additionally, please refer to the [Contribution Guide](CONTRIBUTING.md) for setup instructions and guidance on how to contribute the project.
 
-Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in this project by you, shall be licensed as bellow, without any additional terms or conditions.
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in this project by you, shall be licensed as below, without any additional terms or conditions.
 
 <h2><img height="20" alt="license" src="./img/license.svg">&nbsp;&nbsp;License</h2>
 
