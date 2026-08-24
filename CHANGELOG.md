@@ -15,10 +15,6 @@ This project is licensed under the [Apache License (Version 2.0)](LICENSE). The 
 
 - Improved the clarity of error messages.
 
-## v1-alpha.2 (2026-02-27)
-
-- Improved the clarity of error messages.
-
 ## v1-alpha.1 (2026-02-26)
 
 - Refined the progress indicators.
