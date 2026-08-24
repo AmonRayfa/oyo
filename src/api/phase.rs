@@ -61,7 +61,7 @@ pub(crate) fn run_phase(name: String) -> Result<()> {
                 );
             }
 
-            git(&["tag", &format!("v{}-{}.0", r#gen, name)])?;
+            git(&["tag", "-a", &format!("v{}-{}.0", r#gen, name), "-m", &format!("v{}-{}.0", r#gen, name)])?;
             println!("🔀 Phase transition: v{}-{}.{} -> v{}-{}.0", r#gen, previous_phase, previous_rev, r#gen, name);
         }
         None => {
@@ -72,7 +72,7 @@ pub(crate) fn run_phase(name: String) -> Result<()> {
                 );
             }
 
-            git(&["tag", &format!("v{}-{}.0", r#gen, name)])?;
+            git(&["tag", "-a", &format!("v{}-{}.0", r#gen, name), "-m", &format!("v{}-{}.0", r#gen, name)])?;
             println!("✨ Phase initialization: v{}-{}.0", r#gen, name);
         }
     }

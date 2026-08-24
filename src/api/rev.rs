@@ -31,7 +31,8 @@ pub(crate) fn run_rev() -> Result<()> {
             let phase: &str = &last_version_tag[1];
             let previous_rev: u64 = last_version_tag[2].parse()?;
 
-            git(&["tag", &format!("v{}-{}.{}", r#gen, phase, previous_rev + 1)])?;
+            let new_tag = format!("v{}-{}.{}", r#gen, phase, previous_rev + 1);
+            git(&["tag", "-a", &new_tag, "-m", &new_tag])?;
             println!("🔼 Revision bump: v{}-{}.{} -> v{}-{}.{}", r#gen, phase, previous_rev, r#gen, phase, previous_rev + 1);
         }
         None => {
