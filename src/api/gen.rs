@@ -19,8 +19,16 @@ pub(crate) fn run_gen(number: Option<u64>) -> Result<()> {
             let branch_pattern = Regex::new(r"^v(0|[1-9]\d*)$").unwrap();
             let mut generations: Vec<u64> = Vec::new();
 
-            for line in git(&["branch", "--list", "v*"])?.lines() {
-                let branch_name = line.trim().trim_start_matches('*').trim();
+            let local_branches = git(&["branch", "--list", "--format=%(refname:short)"])?;
+            let remote_branches = git(&["branch", "--remotes", "--format=%(refname:short)"])?;
+
+            // Remote branches are listed as `<remote>/<branch>`, so the remote prefix is stripped.
+            let branch_names = local_branches
+                .lines()
+                .map(str::trim)
+                .chain(remote_branches.lines().filter_map(|line| line.trim().split_once('/').map(|(_, name)| name)));
+
+            for branch_name in branch_names {
                 if let Some(cap) = branch_pattern.captures(branch_name)
                     && let Ok(r#gen) = cap[1].parse::<u64>()
                 {
