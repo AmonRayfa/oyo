@@ -55,6 +55,44 @@ impl TestRepo {
         self.git(&["tag", "--list"])
     }
 
+    /// Writes a file in the repository.
+    fn write(&self, file: &str, content: &str) {
+        let path = self.dir.path().join(file);
+        std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+        std::fs::write(path, content).unwrap();
+    }
+
+    /// Reads a file from the repository.
+    fn read(&self, file: &str) -> String {
+        std::fs::read_to_string(self.dir.path().join(file)).unwrap()
+    }
+
+    /// Stages and commits all the changes in the repository.
+    fn commit_all(&self, message: &str) {
+        self.git(&["add", "-A"]);
+        self.git(&["commit", "-m", message]);
+    }
+
+    /// Returns the subject line of the last commit.
+    fn head_subject(&self) -> String {
+        self.git(&["log", "-1", "--pretty=%s"])
+    }
+
+    /// Populates the repository with version metadata (a Cargo manifest, a lockfile, a version constant, and a `.oyo.toml`).
+    fn write_version_metadata(&self) {
+        self.write(
+            "Cargo.toml",
+            "[package]\nname = \"demo\"\nversion = \"0.0.0\"\nedition = \"2024\"\n\n[dependencies.serde]\nversion = \"1.0.219\"\n",
+        );
+        self.write(
+            "Cargo.lock",
+            "version = 4\n\n[[package]]\nname = \"demo\"\nversion = \"0.0.0\"\n\n[[package]]\nname = \"serde\"\nversion = \"1.0.219\"\n",
+        );
+        self.write("src/main.rs", "const VERSION: &str = \"v0-zeta.9\";\n");
+        self.write(".oyo.toml", "version-files = [\"src/main.rs\"]\n");
+        self.commit_all("chore: Add version metadata.");
+    }
+
     /// Prepares a command that runs in the repository, shielded from the host's Git configuration.
     fn command(&self, program: &str) -> Command {
         let mut command = Command::new(program);
@@ -229,4 +267,122 @@ fn version_flag_prints_a_version_string() {
     let output = repo.oyo(&["-v"]);
     assert!(output.status.success());
     assert!(!output.stdout.is_empty());
+}
+
+#[test]
+fn phase_syncs_the_version_metadata_before_tagging() {
+    let repo = TestRepo::new();
+    repo.oyo(&["gen"]);
+    repo.write_version_metadata();
+    assert!(repo.oyo(&["phase", "alameda"]).status.success());
+
+    // The metadata carries the new versions, and the tag sits on the bump commit.
+    assert!(repo.read("Cargo.toml").contains("version = \"1.0.0\""));
+    assert!(repo.read("Cargo.lock").contains("name = \"demo\"\nversion = \"1.0.0\""));
+    assert!(repo.read("src/main.rs").contains("\"v1-alameda.0\""));
+    assert_eq!(repo.head_subject(), "chore: Bump the version to v1-alameda.0.");
+    assert_eq!(repo.git(&["rev-parse", "v1-alameda.0^{commit}"]), repo.git(&["rev-parse", "HEAD"]));
+
+    // The version fields of the dependencies are left untouched.
+    assert!(repo.read("Cargo.toml").contains("version = \"1.0.219\""));
+    assert!(repo.read("Cargo.lock").contains("name = \"serde\"\nversion = \"1.0.219\""));
+}
+
+#[test]
+fn rev_projects_the_cumulative_minor_and_patch() {
+    let repo = TestRepo::new();
+    repo.oyo(&["gen"]);
+    repo.write_version_metadata();
+    repo.oyo(&["phase", "apple"]);
+    repo.commit();
+    repo.oyo(&["phase", "bravo"]);
+    repo.commit();
+    assert!(repo.oyo(&["rev"]).status.success());
+    assert!(repo.read("Cargo.toml").contains("version = \"1.1.1\""));
+    assert!(repo.read("src/main.rs").contains("\"v1-bravo.1\""));
+}
+
+#[test]
+fn phase_minor_keeps_counting_through_the_wrap() {
+    let repo = TestRepo::new();
+    repo.oyo(&["gen"]);
+    repo.git(&["tag", "v1-apple.0"]);
+    repo.git(&["tag", "v1-zulu.3"]);
+    repo.commit();
+    repo.write_version_metadata();
+    assert!(repo.oyo(&["phase", "arrow"]).status.success());
+
+    // The third phase wraps back to 'a', but its minor is the cumulative count (2), not the alphabet index (0).
+    assert!(repo.read("Cargo.toml").contains("version = \"1.2.0\""));
+}
+
+#[test]
+fn dry_run_reports_the_versions_without_side_effects() {
+    let repo = TestRepo::new();
+    repo.oyo(&["gen"]);
+    repo.write_version_metadata();
+    let output = repo.oyo(&["phase", "alameda", "--dry-run"]);
+    assert!(output.status.success());
+    let stdout = String::from_utf8_lossy(&output.stdout).to_string();
+    assert!(stdout.contains("v1-alameda.0") && stdout.contains("1.0.0"), "unexpected dry run output: {}", stdout);
+
+    // Nothing was tagged, committed, or modified.
+    assert_eq!(repo.tags(), "");
+    assert_eq!(repo.head_subject(), "chore: Add version metadata.");
+    assert!(repo.read("Cargo.toml").contains("version = \"0.0.0\""));
+}
+
+#[test]
+fn phase_tags_head_directly_when_the_metadata_is_already_synced() {
+    let repo = TestRepo::new();
+    repo.oyo(&["gen"]);
+    repo.write_version_metadata();
+    repo.write("Cargo.toml", "[package]\nname = \"demo\"\nversion = \"1.0.0\"\n");
+    repo.write("Cargo.lock", "version = 4\n\n[[package]]\nname = \"demo\"\nversion = \"1.0.0\"\n");
+    repo.write("src/main.rs", "const VERSION: &str = \"v1-alameda.0\";\n");
+    repo.commit_all("chore: Bump the version manually.");
+    assert!(repo.oyo(&["phase", "alameda"]).status.success());
+
+    // No bump commit was created: the tag sits on the last manual commit.
+    assert_eq!(repo.head_subject(), "chore: Bump the version manually.");
+    assert_eq!(repo.git(&["rev-parse", "v1-alameda.0^{commit}"]), repo.git(&["rev-parse", "HEAD"]));
+}
+
+#[test]
+fn phase_fails_when_a_listed_version_file_is_invalid() {
+    let repo = TestRepo::new();
+    repo.oyo(&["gen"]);
+    repo.write(".oyo.toml", "version-files = [\"missing.rs\"]\n");
+    repo.commit_all("chore: Add a broken config.");
+    assert_graceful_failure(&repo.oyo(&["phase", "alameda"]));
+
+    repo.write("empty.rs", "const NOT_A_VERSION: u64 = 0;\n");
+    repo.write(".oyo.toml", "version-files = [\"empty.rs\"]\n");
+    repo.commit_all("chore: Point the config at a file without a version.");
+    assert_graceful_failure(&repo.oyo(&["phase", "alameda"]));
+    assert_eq!(repo.tags(), "");
+}
+
+#[test]
+fn gen_rejects_generation_zero() {
+    let repo = TestRepo::new();
+    assert_graceful_failure(&repo.oyo(&["gen", "-n", "0"]));
+    assert_eq!(repo.current_branch(), "dev");
+}
+
+#[test]
+fn gen_ignores_v0_branches() {
+    let repo = TestRepo::new();
+    repo.git(&["branch", "v0"]);
+    assert!(repo.oyo(&["gen"]).status.success());
+    assert_eq!(repo.current_branch(), "v1");
+}
+
+#[test]
+fn phase_and_rev_reject_a_v0_branch() {
+    let repo = TestRepo::new();
+    repo.git(&["checkout", "-b", "v0"]);
+    assert_graceful_failure(&repo.oyo(&["phase", "alameda"]));
+    assert_graceful_failure(&repo.oyo(&["rev"]));
+    assert_eq!(repo.tags(), "");
 }

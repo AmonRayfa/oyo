@@ -3,19 +3,19 @@
 
 //! This module defines the function behind the `oyo phase <name>` command.
 
-use super::{check_init_repo, check_last_commit, git};
+use super::{check_init_repo, check_last_commit, count_distinct_phases, git, sync_version_metadata};
 use mabe::{Context, Result, bail};
 use regex::Regex;
 
 /// Handles the `phase` subcommand.
-pub(crate) fn run_phase(name: String) -> Result<()> {
+pub(crate) fn run_phase(name: String, dry_run: bool) -> Result<()> {
     check_init_repo()?;
     check_last_commit()?;
 
     let current_branch = git(&["branch", "--show-current"])?.trim().to_string();
     println!("🔍 Inspecting current branch ({})...", current_branch);
 
-    let branch_pattern = Regex::new(r"^v(0|[1-9]\d*)$").unwrap();
+    let branch_pattern = Regex::new(r"^v([1-9]\d*)$").unwrap();
     let r#gen =
         branch_pattern.captures(&current_branch).context("Current branch is not a valid version branch (vN).")?[1].to_string();
 
@@ -36,10 +36,10 @@ pub(crate) fn run_phase(name: String) -> Result<()> {
         .filter(|s| !s.is_empty())
         .collect();
 
-    match tags.iter().rev().find_map(|tag| tag_pattern.captures(tag)) {
+    let previous_version = match tags.iter().rev().find_map(|tag| tag_pattern.captures(tag)) {
         Some(last_version_tag) => {
-            let previous_phase = &last_version_tag[1];
-            let previous_rev = &last_version_tag[2];
+            let previous_phase = last_version_tag[1].to_string();
+            let previous_rev = last_version_tag[2].to_string();
             let previous_char = previous_phase.chars().next().unwrap();
             let new_char = name.chars().next().unwrap();
 
@@ -61,8 +61,7 @@ pub(crate) fn run_phase(name: String) -> Result<()> {
                 );
             }
 
-            git(&["tag", "-a", &format!("v{}-{}.0", r#gen, name), "-m", &format!("v{}-{}.0", r#gen, name)])?;
-            println!("🔀 Phase transition: v{}-{}.{} -> v{}-{}.0", r#gen, previous_phase, previous_rev, r#gen, name);
+            Some((previous_phase, previous_rev))
         }
         None => {
             if !name.starts_with('a') {
@@ -72,9 +71,26 @@ pub(crate) fn run_phase(name: String) -> Result<()> {
                 );
             }
 
-            git(&["tag", "-a", &format!("v{}-{}.0", r#gen, name), "-m", &format!("v{}-{}.0", r#gen, name)])?;
-            println!("✨ Phase initialization: v{}-{}.0", r#gen, name);
+            None
         }
+    };
+
+    let new_version = format!("v{}-{}.0", r#gen, name);
+    let semver = format!("{}.{}.0", r#gen, count_distinct_phases(&tags, &tag_pattern));
+
+    if dry_run {
+        println!("🔎 Dry run: the next version would be {} (SemVer projection: {}).", new_version, semver);
+        return Ok(());
+    }
+
+    sync_version_metadata(&new_version, &semver)?;
+    git(&["tag", "-a", &new_version, "-m", &new_version])?;
+
+    match previous_version {
+        Some((previous_phase, previous_rev)) => {
+            println!("🔀 Phase transition: v{}-{}.{} -> {}", r#gen, previous_phase, previous_rev, new_version)
+        }
+        None => println!("✨ Phase initialization: {}", new_version),
     }
 
     Ok(())

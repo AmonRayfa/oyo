@@ -9,7 +9,7 @@ mod phase;
 mod rev;
 
 pub(crate) use r#gen::run_gen;
-use helpers::{check_init_repo, check_last_commit, git};
+use helpers::{check_init_repo, check_last_commit, count_distinct_phases, git, sync_version_metadata};
 pub(crate) use phase::run_phase;
 pub(crate) use rev::run_rev;
 
@@ -42,8 +42,16 @@ pub(crate) enum Commands {
     Phase {
         /// The name of the new phase.
         name: String,
+
+        /// Prints the resolved versions without creating a tag or modifying any file.
+        #[arg(long)]
+        dry_run: bool,
     },
 
     /// Creates a new tag by incrementing the revision number of the active version branch's last tag.
-    Rev,
+    Rev {
+        /// Prints the resolved versions without creating a tag or modifying any file.
+        #[arg(long)]
+        dry_run: bool,
+    },
 }
