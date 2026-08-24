@@ -15,7 +15,7 @@ pub(crate) fn run_rev(dry_run: bool) -> Result<()> {
     let current_branch = git(&["branch", "--show-current"])?.trim().to_string();
     println!("🔍 Inspecting current branch ({})...", current_branch);
 
-    let branch_pattern = Regex::new(r"^v(0|[1-9]\d*)$").unwrap();
+    let branch_pattern = Regex::new(r"^v([1-9]\d*)$").unwrap();
     let r#gen =
         branch_pattern.captures(&current_branch).context("Current branch is not a valid version branch (vN).")?[1].to_string();
 

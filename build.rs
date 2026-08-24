@@ -16,9 +16,9 @@ fn git(args: &[&str]) -> Option<String> {
     if stdout.is_empty() { None } else { Some(stdout) }
 }
 
-/// Determines whether a branch name designates a version branch (i.e. `vN`).
+/// Determines whether a branch name designates a version branch (i.e. `vN`, with `N` starting at 1).
 fn is_version_branch(name: &str) -> bool {
-    name.len() > 1 && name.starts_with('v') && name[1..].chars().all(|c| c.is_ascii_digit())
+    name.len() > 1 && name.starts_with('v') && !name[1..].starts_with('0') && name[1..].chars().all(|c| c.is_ascii_digit())
 }
 
 fn main() {
