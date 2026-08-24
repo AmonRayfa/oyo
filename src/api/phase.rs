@@ -21,6 +21,10 @@ pub(crate) fn run_phase(name: String) -> Result<()> {
 
     println!("📋 Validating phase name...");
 
+    if name.is_empty() {
+        bail!("Invalid phase name: the name cannot be empty.");
+    }
+
     if !name.chars().all(|c| c.is_ascii_lowercase()) {
         bail!("Invalid phase name: '{}'. Only lowercase ASCII characters [a-z] are allowed.", name);
     }
