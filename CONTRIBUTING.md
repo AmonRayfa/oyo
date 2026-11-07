@@ -1,6 +1,6 @@
 # Contribution Guide
 
-This file is primarily intended for developers who wish to fork the project and potentially contribute to it. This project follows [Phased Versioning](https://labs.koseka.net/phased-versioning) from Koseka Labs, which defines the versioning, branching, and release rules, and commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. So, make sure to read both first before contributing to the project in any way.
+This file is primarily intended for developers who wish to fork the project and potentially contribute to it. This project follows [Phased Versioning](https://labs.koseka.net/phased-versioning) for its versioning, branching, and release rules, and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for its commit messages. So, make sure to read both first before contributing to the project in any way.
 
 ## Project Structure
 
