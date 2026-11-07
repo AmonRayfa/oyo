@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0.
 
 //! [**Oyo**](https://github.com/AmonRayfa/oyo) is a Rust CLI tool designed to seamlessly integrate and automate
-//! [Phased Versioning](https://phased-versioning.koseka.net) within your [Git](https://git-scm.com/) repositories.
+//! [Phased Versioning](https://labs.koseka.net/phased-versioning) within your [Git](https://git-scm.com/) repositories.
 //! It acts as a bridge between your project's versioning scheme and Git by mapping generations to branches and automatically
 //! managing tags for phases and revisions, ensuring your releases remain perfectly consistent and free of manual errors.
 //!
@@ -31,7 +31,7 @@
 //! # Usage
 //!
 //! **Oyo** simplifies version management into three core commands that enforce the rules of
-//! [Phased Versioning](https://phased-versioning.koseka.net) automatically:
+//! [Phased Versioning](https://labs.koseka.net/phased-versioning) automatically:
 //!
 //! * `oyo gen [-n/--number <generation_number>]`: Creates a new **version branch** representing a **base version** (e.g., `v1`,
 //!   `v2`) by incrementing the generation number of the last version branch by `1`. If no version branches currently exist, it
@@ -49,7 +49,7 @@
 //!   that the tag, the manifest, and the source code can never disagree on the version:
 //!
 //! * The `[package]` version in `Cargo.toml` (and the crate's own entry in `Cargo.lock`) is updated with the
-//!   [SemVer projection](https://phased-versioning.koseka.net) of the new version, where MAJOR is the generation number,
+//!   [SemVer projection](https://labs.koseka.net/phased-versioning) of the new version, where MAJOR is the generation number,
 //!   MINOR is the cumulative count of phases opened in the generation (starting at `0`, and counting through the `z` -> `a`
 //!   wrap of the alphabetic progression), and PATCH is the revision number. For example, if `cyrus` is the third phase of the
 //!   `v1` generation, `v1-cyrus.5` projects to `1.2.5`.
